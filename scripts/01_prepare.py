@@ -178,7 +178,32 @@ def main():
     data = {"photos": records}
     OUTPUT.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"\nSaved {len(records)} records → {OUTPUT}")
-    print("Next: review duplicates, then run scripts/02_identify.py")
+
+    # ── generate thumbnails ───────────────────────────────────────────────────
+    thumb_dir = PHOTO_DIR / "thumbs"
+    thumb_dir.mkdir(exist_ok=True)
+
+    need_thumb = [
+        r for r in records
+        if not (thumb_dir / r["filename"]).exists()
+    ]
+
+    if need_thumb:
+        print(f"\nGenerating {len(need_thumb)} thumbnail(s) …")
+        for r in need_thumb:
+            src = PHOTO_DIR / r["filename"]
+            dst = thumb_dir / r["filename"]
+            result = subprocess.run(
+                ["sips", "-Z", "600", "--setProperty", "formatOptions", "75",
+                 str(src), "--out", str(dst)],
+                capture_output=True,
+            )
+            status = "✓" if result.returncode == 0 else "✗"
+            print(f"  {status} {r['filename']}")
+    else:
+        print("\nAll thumbnails up to date.")
+
+    print("\nNext: review duplicates, then run scripts/02_identify.py")
 
 
 if __name__ == "__main__":
