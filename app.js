@@ -28,7 +28,7 @@ function renderGallery(photos) {
   const gallery = document.getElementById('gallery');
   gallery.innerHTML = photos.map(p => `
     <div class="card" data-id="${p.id}">
-      <img src="photos/${p.filename}" alt="${p.species_common_en || p.id}" loading="lazy">
+      <img src="photos/thumbs/${p.filename}" alt="${p.species_common_en || p.id}" loading="lazy">
       <div class="card-overlay">
         <span class="o-common">${p.species_common_en || '—'}</span>
         <span class="o-sci">${p.species_scientific || ''}</span>
