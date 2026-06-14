@@ -35,6 +35,7 @@ python3 scripts/01_prepare.py
 - 讀取每張照片的 GPS 座標與拍攝日期
 - 用 Nominatim 反查英文地址
 - 偵測在同一時間、同一地點拍攝的重複照片
+- 自動在 `photos/thumbs/` 生成 600px 縮圖（已有的不重複處理）
 - 輸出 `trees.json`（尚無樹種資料）
 
 沒有 GPS 的照片，腳本會標出來，需手動在 `trees.json` 裡填入 `lat` / `lng`。
