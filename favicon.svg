@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="#E8ECF2" rx="14"/>
+  <g fill="none" stroke="#2B2B3B" stroke-linecap="round" stroke-linejoin="round">
+    <!-- trunk -->
+    <line x1="50" y1="92" x2="50" y2="54" stroke-width="5.5"/>
+    <!-- left main branch -->
+    <line x1="50" y1="64" x2="18" y2="38" stroke-width="3.8"/>
+    <!-- right main branch -->
+    <line x1="50" y1="64" x2="82" y2="38" stroke-width="3.8"/>
+    <!-- center branch -->
+    <line x1="50" y1="54" x2="50" y2="16" stroke-width="3.2"/>
+    <!-- left sub-branch -->
+    <line x1="30" y1="50" x2="8"  y2="26" stroke-width="2.5"/>
+    <!-- right sub-branch -->
+    <line x1="70" y1="50" x2="92" y2="26" stroke-width="2.5"/>
+    <!-- center left tip -->
+    <line x1="50" y1="32" x2="30" y2="12" stroke-width="2"/>
+    <!-- center right tip -->
+    <line x1="50" y1="32" x2="70" y2="12" stroke-width="2"/>
+    <!-- top left -->
+    <line x1="50" y1="16" x2="42"  y2="4" stroke-width="1.5"/>
+    <!-- top right -->
+    <line x1="50" y1="16" x2="58"  y2="4" stroke-width="1.5"/>
+  </g>
+</svg>
