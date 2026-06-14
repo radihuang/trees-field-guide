@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trees — Moving</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0d0d0f;
+      width: 100vw; height: 100vh;
+      overflow: hidden;
+      cursor: none;
+    }
+
+    #player {
+      width: 100vw; height: 100vh;
+      object-fit: cover;
+      display: block;
+    }
+
+    #hint {
+      position: fixed;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      pointer-events: none;
+      transition: opacity 1s ease;
+    }
+    #hint.hidden { opacity: 0; }
+
+    #nav {
+      position: fixed;
+      top: 28px; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      pointer-events: none;
+    }
+
+    a.back {
+      position: fixed;
+      top: 24px; left: 28px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: default;
+    }
+    a.back:hover { color: rgba(255,255,255,0.7); cursor: pointer; }
+
+    #muteBtn {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.35);
+      cursor: pointer;
+      padding: 6px;
+      line-height: 0;
+      transition: color 0.2s;
+    }
+    #muteBtn:hover { color: rgba(255,255,255,0.75); }
+    #muteBtn svg { display: block; }
+  </style>
+</head>
+<body>
+
+  <video id="player" autoplay muted playsinline></video>
+  <a class="back" href="index.html">← Field Guide</a>
+  <div id="nav"><span id="counter"></span></div>
+  <div id="hint">Space — shuffle</div>
+
+  <button id="muteBtn" aria-label="Toggle mute">
+    <!-- muted icon (default) -->
+    <svg id="iconMuted" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <line x1="23" y1="9" x2="17" y2="15"/>
+      <line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+    <!-- sound icon (hidden initially) -->
+    <svg id="iconSound" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+    </svg>
+  </button>
+
+  <script>
+    const VIDEOS = [
+      'IMG_9280.mov',
+      'IMG_9243.mov',
+      'IMG_9244.mov',
+    ];
+
+    const player  = document.getElementById('player');
+    const hint    = document.getElementById('hint');
+    const counter = document.getElementById('counter');
+
+    let current = -1;
+    let hintTimer;
+
+    function pickRandom() {
+      if (VIDEOS.length === 1) return 0;
+      let next;
+      do { next = Math.floor(Math.random() * VIDEOS.length); } while (next === current);
+      return next;
+    }
+
+    function play(index) {
+      current = index;
+      player.src = VIDEOS[index];
+      player.play();
+      counter.textContent = `${index + 1} / ${VIDEOS.length}`;
+      showHint();
+    }
+
+    function showHint() {
+      hint.classList.remove('hidden');
+      clearTimeout(hintTimer);
+      hintTimer = setTimeout(() => hint.classList.add('hidden'), 2400);
+    }
+
+    // spacebar → random next
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        play(pickRandom());
+      }
+    });
+
+    // tap on mobile
+    document.addEventListener('pointerup', () => play(pickRandom()));
+
+    // auto-advance when clip ends
+    player.addEventListener('ended', () => play(pickRandom()));
+
+    // mute toggle
+    const muteBtn   = document.getElementById('muteBtn');
+    const iconMuted = document.getElementById('iconMuted');
+    const iconSound = document.getElementById('iconSound');
+
+    function setMuted(muted) {
+      player.muted = muted;
+      iconMuted.style.display = muted ? 'block' : 'none';
+      iconSound.style.display = muted ? 'none'  : 'block';
+    }
+
+    muteBtn.addEventListener('click', () => setMuted(!player.muted));
+
+    // start
+    play(pickRandom());
+  </script>
+</body>
+</html>
