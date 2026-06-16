@@ -1,5 +1,7 @@
 scripts/__pycache__/
 *.pyc
 .DS_Store
-*.mov
-*.MOV
+movies/*.mov
+movies/*.MOV
+!movies/uploads/*.mov
+!movies/uploads/*.MOV
