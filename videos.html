@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trees — Moving</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -21,31 +23,32 @@
       display: block;
     }
 
-    #hint {
+    #caption {
       position: fixed;
       bottom: 36px;
       left: 50%;
       transform: translateX(-50%);
-      font-family: 'DM Sans', system-ui, sans-serif;
-      font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
+      text-align: center;
       pointer-events: none;
-      transition: opacity 1s ease;
+      white-space: nowrap;
     }
-    #hint.hidden { opacity: 0; }
-
-    #nav {
-      position: fixed;
-      top: 28px; left: 50%;
-      transform: translateX(-50%);
-      font-family: 'DM Sans', system-ui, sans-serif;
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
+    #caption .en {
+      font-family: 'Cormorant', Georgia, serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 15px;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.5);
+      display: block;
+    }
+    #caption .zh {
+      font-family: 'Cormorant', Georgia, serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 0.25em;
       color: rgba(255,255,255,0.3);
-      pointer-events: none;
+      display: block;
+      margin-top: 5px;
     }
 
     a.back {
@@ -81,17 +84,18 @@
 
   <video id="player" autoplay muted playsinline></video>
   <a class="back" href="index.html">← Field Guide</a>
-  <div id="nav"><span id="counter"></span></div>
-  <div id="hint">Space — shuffle</div>
+
+  <div id="caption">
+    <span class="en">Rustling light. Shifting shade.</span>
+    <span class="zh">木漏れ日　葉音　森閑</span>
+  </div>
 
   <button id="muteBtn" aria-label="Toggle mute">
-    <!-- muted icon (default) -->
     <svg id="iconMuted" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
       <line x1="23" y1="9" x2="17" y2="15"/>
       <line x1="17" y1="9" x2="23" y2="15"/>
     </svg>
-    <!-- sound icon (hidden initially) -->
     <svg id="iconSound" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:none">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
       <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
@@ -116,12 +120,9 @@
       'movies/uploads/IMG_1481.mov',
     ];
 
-    const player  = document.getElementById('player');
-    const hint    = document.getElementById('hint');
-    const counter = document.getElementById('counter');
+    const player = document.getElementById('player');
 
     let current = -1;
-    let hintTimer;
 
     function pickRandom() {
       if (VIDEOS.length === 1) return 0;
@@ -134,14 +135,6 @@
       current = index;
       player.src = VIDEOS[index];
       player.play();
-      counter.textContent = `${index + 1} / ${VIDEOS.length}`;
-      showHint();
-    }
-
-    function showHint() {
-      hint.classList.remove('hidden');
-      clearTimeout(hintTimer);
-      hintTimer = setTimeout(() => hint.classList.add('hidden'), 2400);
     }
 
     // spacebar → random next
